@@ -9,7 +9,7 @@ import telethon.tl.types
 from telethon import TelegramClient, events
 from telethon.tl.functions.messages import ForwardMessagesRequest
 from telethon.types import Message, UpdateNewMessage
-
+from config import *
 from cansend import CanSend
 from config import *
 from terabox import get_data
