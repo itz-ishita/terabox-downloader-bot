@@ -314,16 +314,16 @@ Direct Link: [Click Here](https://t.me/teraboxdown_bot?start={uuid})
         )
 @bot.on(events.NewMessage(pattern='/adgc'))
 async def add_channel_to_approved_groups(event):
-    if event.is_private:
+    if not event.is_private:
         return
 
     if await is_admin(event.sender_id):
-        channel_username = event.text.split(' ')[1]
+        channel_id = event.text.split(' ')[1]
         try:
-            full_channel = await bot(GetFullChannel(channel=channel_username))
+            full_channel = await bot(GetFullChannel(channel=int(channel_id)))
             if isinstance(full_channel, ChannelFull):
-                db.sadd('APPROVED_GROUPS', event.chat_id)
-                await event.reply(f"Channel @{channel_username} added to approved groups.")
+                db.sadd('APPROVED_GROUPS', int(channel_id))
+                await event.reply(f"Channel {channel_id} added to approved groups.")
             else:
                 await event.reply("Invalid channel.")
         except Exception as e:
@@ -333,14 +333,14 @@ async def add_channel_to_approved_groups(event):
 
 @bot.on(events.NewMessage(pattern='/rgc'))
 async def remove_channel_from_approved_groups(event):
-    if event.is_private:
+    if not event.is_private:
         return
 
     if await is_admin(event.sender_id):
-        channel_username = event.text.split(' ')[1]
+        channel_id = event.text.split(' ')[1]
         try:
-            db.srem('APPROVED_GROUPS', event.chat_id)
-            await event.reply(f"Channel @{channel_username} removed from approved groups.")
+            db.srem('APPROVED_GROUPS', int(channel_id))
+            await event.reply(f"Channel {channel_id} removed from approved groups.")
         except Exception as e:
             await event.reply(f"Error: {str(e)}")
     else:
@@ -348,7 +348,7 @@ async def remove_channel_from_approved_groups(event):
 
 @bot.on(events.NewMessage(pattern='/approvedlist'))
 async def get_approved_groups_list(event):
-    if event.is_private:
+    if not event.is_private:
         return
 
     if await is_admin(event.sender_id):
