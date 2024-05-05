@@ -1,14 +1,17 @@
-API_ID = 123456  # api id
-API_HASH = "ed44780dedd182084f2133b16944cf565"  # api hash
+import os
+from os import getenv
 
-BOT_TOKEN = "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11"  # bot token
+API_ID =   "20756810"  # api id
+API_HASH = "7af61b35db3a1c79f7e4c727fa95831e"  # api hash
 
+BOT_TOKEN = os.getenv("TOKEN", None)
+MONGO_DB_URI = "mongodb+srv://ishitaroy657boobs:bUE7wTKcdDabJkVR@geektyper.gzrindn.mongodb.net/"
 
 ## REDIS
-HOST = "localhost"  # redis host uri
-PORT = 6379  # redis port
-PASSWORD = ""  # redis password
+HOST = "redis-18097.c240.us-east-1-3.ec2.redns.redis-cloud.com"  # redis host uri
+PORT = 18097  # redis port
+PASSWORD = "TMpFD0qcFFhlMGCyrBRyQ7qaKg1Wisz8"  # redis password
 
-PRIVATE_CHAT_ID = -1001234567890  # CHAT WHERE YOU WANT TO STORE VIDEOS
-COOKIE = ""  # COOKIE FOR AUTHENTICATION (get from chrome dev tools) ex: "PANWEB=1; csrfToken=; lang=en; TSID=; __bid_n=; _ga=; __stripe_mid=; ndus=; browserid==; ndut_fmt=; _ga_06ZNKL8C2E=" (don't use this)
-ADMINS = [1317173146]
+PRIVATE_CHAT_ID = -1002065625867  # CHAT WHERE YOU WANT TO STORE VIDEOS
+COOKIE = """csrfToken=JMeFghH4F_T-4tUd41JeLtdd; browserid=Gv1O59UYXY4JAe3ecveXuTMv9aTKPhlsMHmGbyq7kP9FZLOOmLPmJGAV4GM=; lang=en; TSID=LOAYfxcHLDFel3boD81yqvygYJsa6K0v; __bid_n=18f3d5e5cf58e1a1ef4207; _gcl_au=1.1.1221507662.1714721549; _fbp=fb.1.1714721549564.925939284; _ga=GA1.1.913593234.1714721550; dom3ic8zudi28v8lr6fgphwffqoz0j6c=d0e9f2fd-a4fc-4edb-a057-ef46a3a155ea%3A2%3A1; pp_main_ef6d6949ad8460f9c409b98f467a7265=1; _ga_RSNVN63CM3=GS1.1.1714721550.1.1.1714721572.38.0.0; g_state={"i_l":0}; ndus=YzxK-eyteHuiYW6II-_fOP_n3ZrRHaePNiriupVa; ab_ymg_result={"data":"35d28366898a5cb492afe7761dc80ab8d62af940bd42cc4d13f8a72ba82bfe59da40f95b4ffc1fef47d6b3d0915473d17699d91c107e8b7bfdb2329e16c93a8df871cb725464cacbc7b04c94a5d63230124e9d6eb8c9925a731e39ee7b6d8b71fe2598177384ba7455f337b48e4ba53c9aa8b4e6b16b26cbf93d4020abe3ebeb","key_id":"66","sign":"75b41ed3"}; ndut_fmt=FCAE28C9F4CF08D56DFA8EC75A9AD8ED52586653A11DC6D58DB75E49268A98CE; ab_sr=1.0.1_ODg2MmMxNWQ0ZWU1MjZhMTBkMzY0NTA2ZWNmMjQwNDdiYzAwZmY4M2U2MGM0MzE5NDkwNzAxNzZkZDMzNDZkMmJlYjI5YzI5OWFkOGRlOTYyMzcyOThmOGZkNjUwODE5OWY3MzE3ODRlMjllOTAzMGYyNWE3NTljY2VkMmYzZmFhODU3NDJkZGYyNzk5NTc3YjU4NGI5OWZmODEwNWQ1MA==; _ga_06ZNKL8C2E=GS1.1.1714721587.1.1.1714721865.41.0.0"""
+ADMINS = [7185106962]
