@@ -122,7 +122,7 @@ async def get_message(m: Message):
 
 
 async def handle_message(m: Message):
-
+  if m.is_private or m.chat_id in APPROVED_GROUPS:
     url = get_urls_from_string(m.text)
     if not url:
         return await m.reply("Please enter a valid url.")
