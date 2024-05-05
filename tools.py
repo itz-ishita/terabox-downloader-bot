@@ -46,7 +46,7 @@ def check_url_patterns(url: str) -> bool:
     return False
 
 
-def extract_code_from_url(url: str) -> str | None:
+def extract_code_from_url(url: str) -> str or None:
     """
     Extracts the code from a URL.
 
@@ -70,7 +70,7 @@ def extract_code_from_url(url: str) -> str | None:
     return None
 
 
-def get_urls_from_string(string: str) -> str | None:
+def get_urls_from_string(string: str) -> str or None:
     """
     Extracts all URLs from a given string.
 
@@ -84,11 +84,11 @@ def get_urls_from_string(string: str) -> str | None:
     urls = re.findall(pattern, string)
     urls = [url for url in urls if check_url_patterns(url)]
     if not urls:
-        return
+        return None
     return urls[0]
 
 
-def extract_surl_from_url(url: str) -> str:
+def extract_surl_from_url(url: str) -> str or bool:
     """
     Extracts the surl from a URL.
 
@@ -178,7 +178,7 @@ async def download_file(
     url: str,
     filename: str,
     callback=None,
-) -> str | bool:
+) -> str or bool:
     """
     Download a file from a URL to a specified location.
 
@@ -215,7 +215,7 @@ async def download_file(
         return False
 
 
-def download_image_to_bytesio(url: str, filename: str) -> BytesIO | None:
+def download_image_to_bytesio(url: str, filename: str) -> BytesIO or None:
     """
     Downloads an image from a URL and returns it as a BytesIO object.
 
