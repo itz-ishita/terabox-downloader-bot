@@ -312,7 +312,57 @@ Direct Link: [Click Here](https://t.me/teraboxdown_bot?start={uuid})
             int(count) + 1 if count else 1,
             ex=7200,
         )
+@bot.on(events.NewMessage(pattern='/adgc'))
+async def add_channel_to_approved_groups(event):
+    if event.is_private:
+        return
 
+    if await is_admin(event.sender_id):
+        channel_username = event.text.split(' ')[1]
+        try:
+            full_channel = await bot(GetFullChannel(channel=channel_username))
+            if isinstance(full_channel, ChannelFull):
+                db.sadd('APPROVED_GROUPS', event.chat_id)
+                await event.reply(f"Channel @{channel_username} added to approved groups.")
+            else:
+                await event.reply("Invalid channel.")
+        except Exception as e:
+            await event.reply(f"Error: {str(e)}")
+    else:
+        await event.reply("You are not an admin.")
+
+@bot.on(events.NewMessage(pattern='/rgc'))
+async def remove_channel_from_approved_groups(event):
+    if event.is_private:
+        return
+
+    if await is_admin(event.sender_id):
+        channel_username = event.text.split(' ')[1]
+        try:
+            db.srem('APPROVED_GROUPS', event.chat_id)
+            await event.reply(f"Channel @{channel_username} removed from approved groups.")
+        except Exception as e:
+            await event.reply(f"Error: {str(e)}")
+    else:
+        await event.reply("You are not an admin.")
+
+@bot.on(events.NewMessage(pattern='/approvedlist'))
+async def get_approved_groups_list(event):
+    if event.is_private:
+        return
+
+    if await is_admin(event.sender_id):
+        approved_groups = db.smembers('APPROVED_GROUPS')
+        if approved_groups:
+            groups_list = '\n'.join([f"- {group}" for group in approved_groups])
+            await event.reply(f"Approved Groups:\n{groups_list}")
+        else:
+            await event.reply("No approved groups yet.")
+    else:
+        await event.reply("You are not an admin.")
+
+async def is_admin(user_id):
+    return user_id == ADMIN_ID
 
 bot.start(bot_token=BOT_TOKEN)
 bot.run_until_disconnected()
