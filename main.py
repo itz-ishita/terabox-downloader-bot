@@ -114,7 +114,7 @@ async def remove(m: UpdateNewMessage):
         outgoing=False,
         func=lambda message: message.text
         and get_urls_from_string(message.text)
-        and message.is_private,
+        and (message.is_private or db.sismember("PREMIUM_GC", message.chat_id)),
     )
 )
 async def get_message(m: Message):
@@ -313,6 +313,36 @@ Direct Link: [Click Here](https://t.me/teraboxdown_bot?start={uuid})
             ex=7200,
         )
 
+@bot.on(
+    events.NewMessage(
+        pattern="/adgc$",
+        incoming=True,
+        outgoing=False,
+        from_users=ADMINS,
+    )
+)
+async def add_group_to_premium(m: UpdateNewMessage):
+    if m.is_group:
+        db.sadd("PREMIUM_GC", m.chat_id)
+        await m.reply("Group added to premium.")
+    else:
+        await m.reply("This command can only be used in a group.")
+
+
+@bot.on(
+    events.NewMessage(
+        pattern="/rgc$",
+        incoming=True,
+        outgoing=False,
+        from_users=ADMINS,
+    )
+)
+async def remove_group_from_premium(m: UpdateNewMessage):
+    if m.is_group:
+        db.srem("PREMIUM_GC", m.chat_id)
+        await m.reply("Group removed from premium.")
+    else:
+        await m.reply("This command can only be used in a group.")
 
 bot.start(bot_token=BOT_TOKEN)
 bot.run_until_disconnected()
