@@ -2,14 +2,14 @@ import asyncio
 import os
 import time
 from uuid import uuid4
-from telethon.tl.functions.channels import GetFullChannel
+
 import redis
 import telethon
 import telethon.tl.types
 from telethon import TelegramClient, events
 from telethon.tl.functions.messages import ForwardMessagesRequest
 from telethon.types import Message, UpdateNewMessage
-from config import *
+
 from cansend import CanSend
 from config import *
 from terabox import get_data
@@ -47,13 +47,13 @@ Hello! I am a bot to download videos from terabox.
 Send me the terabox link and I will start downloading it.
 Join @RoldexVerse For Updates
 [Source Code](https://github.com/r0ld3x/terabox-downloader-bot) """
-    check_if = await is_user_on_chat(bot, "@ishitaroygc", m.peer_id)
+    check_if = await is_user_on_chat(bot, "@RoldexVerse", m.peer_id)
     if not check_if:
-        return await m.reply("Please join @ishitaroygc then send me the link again.")
-    check_if = await is_user_on_chat(bot, "@ishitaroygc", m.peer_id)
+        return await m.reply("Please join @RoldexVerse then send me the link again.")
+    check_if = await is_user_on_chat(bot, "@RoldexVerseChats", m.peer_id)
     if not check_if:
         return await m.reply(
-            "Please join @ishitaroygc then send me the link again."
+            "Please join @RoldexVerseChats then send me the link again."
         )
     await m.reply(reply_text, link_preview=False, parse_mode="markdown")
 
@@ -122,10 +122,18 @@ async def get_message(m: Message):
 
 
 async def handle_message(m: Message):
-  if m.is_private or m.chat_id in APPROVED_GROUPS:
+
     url = get_urls_from_string(m.text)
     if not url:
         return await m.reply("Please enter a valid url.")
+    check_if = await is_user_on_chat(bot, "@RoldexVerse", m.peer_id)
+    if not check_if:
+        return await m.reply("Please join @RoldexVerse then send me the link again.")
+    check_if = await is_user_on_chat(bot, "@RoldexVerseChats", m.peer_id)
+    if not check_if:
+        return await m.reply(
+            "Please join @RoldexVerseChats then send me the link again."
+        )
     is_spam = db.get(m.sender_id)
     if is_spam and m.sender_id not in [1317173146]:
         return await m.reply("You are spamming. Please wait a 1 minute and try again.")
@@ -304,57 +312,7 @@ Direct Link: [Click Here](https://t.me/teraboxdown_bot?start={uuid})
             int(count) + 1 if count else 1,
             ex=7200,
         )
-@bot.on(events.NewMessage(pattern='/adgc'))
-async def add_channel_to_approved_groups(event):
-    if not event.is_private:
-        return
 
-    if await is_admin(event.sender_id):
-        channel_id = event.text.split(' ')[1]
-        try:
-            full_channel = await bot(GetFullChannel(channel=int(channel_id)))
-            if isinstance(full_channel, ChannelFull):
-                db.sadd('APPROVED_GROUPS', int(channel_id))
-                await event.reply(f"Channel {channel_id} added to approved groups.")
-            else:
-                await event.reply("Invalid channel.")
-        except Exception as e:
-            await event.reply(f"Error: {str(e)}")
-    else:
-        await event.reply("You are not an admin.")
-
-@bot.on(events.NewMessage(pattern='/rgc'))
-async def remove_channel_from_approved_groups(event):
-    if not event.is_private:
-        return
-
-    if await is_admin(event.sender_id):
-        channel_id = event.text.split(' ')[1]
-        try:
-            db.srem('APPROVED_GROUPS', int(channel_id))
-            await event.reply(f"Channel {channel_id} removed from approved groups.")
-        except Exception as e:
-            await event.reply(f"Error: {str(e)}")
-    else:
-        await event.reply("You are not an admin.")
-
-@bot.on(events.NewMessage(pattern='/approvedlist'))
-async def get_approved_groups_list(event):
-    if not event.is_private:
-        return
-
-    if await is_admin(event.sender_id):
-        approved_groups = db.smembers('APPROVED_GROUPS')
-        if approved_groups:
-            groups_list = '\n'.join([f"- {group}" for group in approved_groups])
-            await event.reply(f"Approved Groups:\n{groups_list}")
-        else:
-            await event.reply("No approved groups yet.")
-    else:
-        await event.reply("You are not an admin.")
-
-async def is_admin(user_id):
-    return user_id == ADMIN_ID
 
 bot.start(bot_token=BOT_TOKEN)
 bot.run_until_disconnected()
