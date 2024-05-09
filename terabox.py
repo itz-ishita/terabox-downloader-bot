@@ -2,6 +2,7 @@ import re
 from urllib.parse import parse_qs, urlparse
 
 import requests
+from selenium import __version__
 
 from config import COOKIE
 from tools import get_formatted_size
